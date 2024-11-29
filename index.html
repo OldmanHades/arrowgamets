@@ -1,0 +1,93 @@
+<!-- Main HTML document for the Arrow Matching Game -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow Matching Game</title>
+    <!-- Styles for the game interface -->
+    <style>
+        /* Center-align the entire game content and set base styles */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        /* Main game container with white background and shadow */  
+            #game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+    /* Large display area for the arrow symbols */    
+        #arrow-display {
+            font-size: 48px;
+            margin: 20px 0;
+            min-height: 60px;
+        }
+        /* Styling for interactive buttons */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        /* Styling for score and timer display */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .stats div {
+            font-weight: bold;
+        }
+        /* Styling for leaderboard */
+        .leaderboard {
+            margin-top: 20px;
+        }
+
+        .leaderboard-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 20px;
+            background-color: #f8f8f8;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+        /* Styling for the game container */
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Arrow Matching Game</h1>
+        <div class="stats">
+            <div>Score: <span id="score">0</span></div>
+            <div>Time: <span id="timer">60</span>s</div>
+        </div>
+        <div id="arrow-display"></div>
+        <button id="start-button">Start Game</button>
+        <div class="leaderboard">
+            <h2>Top Scores</h2>
+            <div id="leaderboard-entries"></div>
+        </div>
+    </div>
+    <script type="module" src="app.ts"></script>
+</body>
+</html>
