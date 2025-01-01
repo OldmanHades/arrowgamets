@@ -1,4 +1,3 @@
-// Import the ArrowMatchingGame class from the corresponding module
 import { ArrowMatchingGame } from "./ArrowMatchingGame.ts";
 
 console.log('App script loading...');
@@ -74,9 +73,6 @@ class GameManager {
     }
 
     this.startButton.addEventListener('click', this.startGame.bind(this));
-    
-    // Add global error handler
-    globalThis.addEventListener('error', this.handleGlobalError);
   }
 
   /**
@@ -88,6 +84,7 @@ class GameManager {
       if (!this.gameInstance) {
         this.gameInstance = new ArrowMatchingGame();
         this.startButton?.setAttribute('disabled', 'true');
+        this.gameInstance.updateLeaderboard();
       }
     } catch (error) {
       this.handleGameError(error);

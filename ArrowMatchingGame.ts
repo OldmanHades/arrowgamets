@@ -1,78 +1,27 @@
-// ArrowMatchingGame class manages the game logic for the Arrow Matching Game.
-// It handles the game state, user interactions, and DOM updates.
 export class ArrowMatchingGame {
-      /**
-       * The current score of the game.
-       */
       private score: number = 0;
-
-      /**
-       * The remaining time in seconds for the game.
-       */
       private timeLeft: number = 60;
-
-      /**
-       * Flag indicating whether the game is currently running.
-       */
       private isGameRunning: boolean = false;
-
-      /**
-       * Array of possible arrow characters.
-       */
       private arrows: string[] = ['↑', '↓', '←', '→'];
-
-      /**
-       * The current arrow character displayed on the screen.
-       */
       private currentArrow: string = '';
-
-      /**
-       * The interval ID for the countdown timer.
-       */
       private timerInterval: number | null = null;
 
-      // DOM Elements
-      /**
-       * The HTML element displaying the current arrow.
-       */
       private arrowDisplay!: HTMLElement;
-
-      /**
-       * The HTML element displaying the current score.
-       */
       private scoreDisplay!: HTMLElement;
-
-      /**
-       * The HTML element displaying the remaining time.
-       */
       private timerDisplay!: HTMLElement;
-
-      /**
-       * The HTML element displaying the leaderboard entries.
-       */
       private leaderboardEntries!: HTMLElement;
-
-      /**
-       * The HTML button element to start the game.
-       */
       private startButton!: HTMLButtonElement;
 
-      /**
-       * Initializes the game by setting up DOM elements, keyboard controls, and starting the game.
-       */
       constructor() {
         try {
           this.initializeDOMElements();
+          this.updateLeaderboard();
           this.setupKeyboardControls();
-          this.startGame();
         } catch (error) {
           this.handleGameError(error);
         }
       }
 
-      /**
-       * Initialize DOM elements and ensure they exist.
-       */
       private initializeDOMElements(): void {
         const requiredElements: { id: string, type: 'arrowDisplay' | 'scoreDisplay' | 'timerDisplay' | 'leaderboardEntries' | 'startButton' }[] = [
           { id: 'arrow-display', type: 'arrowDisplay' },
@@ -97,25 +46,16 @@ export class ArrowMatchingGame {
         this.startButton.addEventListener('click', () => this.resetGame());
       }
 
-      /**
-       * Set up keyboard controls for the game.
-       */
       private setupKeyboardControls(): void {
         document.addEventListener('keydown', this.handleKeyPress.bind(this));
       }
 
-      /**
-       * Start the game by resetting the game state.
-       */
       private startGame(): void {
         if (this.isGameRunning) return;
 
         this.resetGame();
       }
 
-      /**
-       * Reset the game state and start the timer.
-       */
       private resetGame(): void {
         this.score = 0;
         this.timeLeft = 60;
@@ -125,15 +65,11 @@ export class ArrowMatchingGame {
         this.startTimer();
         this.showNextArrow();
         
-        // Disable start button during game
         this.startButton.disabled = true;
       }
 
-      /**
-       * Start the countdown timer for the game.
-       */
       private startTimer(): void {
-        this.stopTimer(); // Clear any existing timer
+        this.stopTimer();
         
         this.timerInterval = globalThis.setInterval(() => {
           this.timeLeft--;
@@ -145,9 +81,6 @@ export class ArrowMatchingGame {
         }, 1000);
       }
 
-      /**
-       * Stop the countdown timer.
-       */
       private stopTimer(): void {
         if (this.timerInterval) {
           clearInterval(this.timerInterval);
@@ -155,19 +88,12 @@ export class ArrowMatchingGame {
         }
       }
 
-      /**
-       * Display the next random arrow.
-       */
       private showNextArrow(): void {
         const randomIndex = Math.floor(Math.random() * this.arrows.length);
         this.currentArrow = this.arrows[randomIndex];
         this.arrowDisplay.textContent = this.currentArrow;
       }
 
-      /**
-       * Handle key press events and update score if correct arrow is pressed.
-       * @param event The KeyboardEvent object.
-       */
       private handleKeyPress(event: KeyboardEvent): void {
         if (!this.isGameRunning) return;
 
@@ -185,16 +111,10 @@ export class ArrowMatchingGame {
         }
       }
 
-      /**
-       * Update the score display.
-       */
       private updateScore(): void {
         this.scoreDisplay.textContent = this.score.toString();
       }
 
-      /**
-       * End the game, save the score, and update the leaderboard.
-       */
       private endGame(): void {
         this.stopTimer();
         this.isGameRunning = false;
@@ -208,9 +128,6 @@ export class ArrowMatchingGame {
         alert(`Game Over! Your score: ${this.score}`);
       }
 
-      /**
-       * Save the current score to local storage.
-       */
       private saveScore(): void {
         const scores = JSON.parse(localStorage.getItem('arrowGameScores') || '[]');
         if (!Array.isArray(scores)) {
@@ -222,9 +139,6 @@ export class ArrowMatchingGame {
         localStorage.setItem('arrowGameScores', JSON.stringify(scores.slice(0, 5)));
       }
 
-      /**
-       * Update the leaderboard display with top scores.
-       */
       private updateLeaderboard(): void {
         const scores = JSON.parse(localStorage.getItem('arrowGameScores') || '[]');
         if (!Array.isArray(scores)) {
@@ -241,10 +155,6 @@ export class ArrowMatchingGame {
           .join('');
       }
 
-      /**
-       * Handle errors during game initialization.
-       * @param error The error object.
-       */
       private handleGameError(error: unknown): void {
         console.error('Game initialization error:', error);
         if (error instanceof Error) {
